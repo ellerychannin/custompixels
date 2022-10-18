@@ -59,10 +59,10 @@ function modelReady() {
 
 }
 
-function videoReady() {
-  // bodypix.segmentWithParts(bodyReady, bodyOptions);
-  bodypix.segment(bodyReady, bodyOptions);
-}
+// function videoReady() {
+//   // bodypix.segmentWithParts(bodyReady, bodyOptions);
+//   bodypix.segment(bodyReady, bodyOptions);
+// }
 
 function bodyReady(error, result) {
   if (error) {
@@ -157,19 +157,6 @@ function drawEmojis() {
       }
 }
 
-
-function createHSBPalette() {
-  colorMode(HSB);
-  bodyOptions.palette = bodypix.config.palette;
-  Object.keys(bodyOptions.palette).forEach(part => {
-    const h = floor(random(360));
-    const s = floor(random(100));
-    const b = floor(random(100));
-    const c = color(h, s, b);
-    bodyOptions.palette[part].color = c;
-  });
-}
-
 function detectEmotions(detections) {
   if (detections.length > 0) {
     for (let f = 0; f < detections.length; f++) {
@@ -198,50 +185,8 @@ function detectEmotions(detections) {
 }
 
 
-function drawLandmarks(detections) {
-  if (detections.length > 0) {
-    for (let f = 0; f < detections.length; f++) {
-      let landmarks = detections[f].landmarks;
-      let jawOutline = landmarks.getJawOutline();
-      let nose = landmarks.getNose();
-      let mouth = landmarks.getMouth();
-      let leftEye = landmarks.getLeftEye();
-      let rightEye = landmarks.getRightEye();
-      let leftEyeBbrow = landmarks.getLeftEyeBrow();
-      let rightEyeBrow = landmarks.getRightEyeBrow();
-      drawFacialFeatures(jawOutline, true);
-      drawFacialFeatures(nose, true);
-      drawFacialFeatures(mouth);
-      drawLeftCheek(leftEye[0], nose[1], jawOutline[5]);
-      // drawRightEyes(rightEye);
-      drawFacialFeatures(leftEyeBbrow);
-      drawFacialFeatures(rightEyeBrow);
-    }
-  }
-}
 
 
-function drawFacialFeatures(points, isJawOrNose = false) {
-
-  for (let i=0; i<points.length-1; i++){
-    stroke(0);
-    strokeWeight(3);
-    // point(points[i]._x, points[i]._y);
-    line(points[i]._x, points[i]._y, points[i+1]._x, points[i+1]._y);
-  }
-  if (!isJawOrNose) {
-    line(points[0]._x,points[0]._y, points[points.length-1]._x,  points[points.length-1]._y);
-  }
-}
-
-function drawLeftCheek(eyePoint, nosePoint, jawOutlinePoint) {
-  stroke(0);
-  strokeWeight(3);
-  point(jawOutlinePoint._x, jawOutlinePoint._y);
-  line(eyePoint._x, eyePoint._y+15, nosePoint._x-12, nosePoint._y);
-  line(jawOutlinePoint._x+10, jawOutlinePoint._y-10, eyePoint._x-5, eyePoint._y+15);
-
-}
 
 
 //https://www.youtube.com/watch?v=jKHgVdyC55M

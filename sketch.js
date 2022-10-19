@@ -28,6 +28,8 @@ let imgNeutral;
 let imgAngry;
 let imgSad;
 let imgSurprised;
+let imgDisgusted;
+let imgFearful;
 function preload() {
   // preload() runs once
   imgNeutral = loadImage('assets/neutral_black.png');
@@ -35,7 +37,8 @@ function preload() {
   imgSurprised = loadImage('assets/surprised_black.png');
   imgAngry = loadImage('assets/angry_black.png');
   imgSad = loadImage('assets/sad_black.png');
-
+  imgDisgusted = loadImage('assets/vomit_black.png');
+  imgFearful = loadImage('assets/fear_black.png');
 }
 
 
@@ -73,11 +76,11 @@ function bodyReady(error, result) {
       return;
   }
   segmentation = result;
-  console.log(segmentation);
+  // console.log(segmentation);
 
   background(0);
   image(video, 0, 0, width, height);
-  console.log(segmentation);
+  // console.log(segmentation);
   image(segmentation.maskBackground, 0, 0, width, height);
   drawEmojis();
   // console.log(segmentation.backgroundMask);
@@ -133,7 +136,7 @@ function drawEmojis() {
           if (color[0] == 0 && color[1] == 0 && color[2] == 0) {
             image(imgNeutral, xpos, ypos,  pixelSize, pixelSize);
           } else {
-            console.log(emotionDetected);
+            // console.log(emotionDetected);
             switch(emotionDetected) {
               case "happy":
                 image(imgHappy, xpos, ypos,  pixelSize, pixelSize);
@@ -150,6 +153,12 @@ function drawEmojis() {
               case "sad":
                 image(imgSad, xpos, ypos,  pixelSize, pixelSize);
                 break;
+              case "disgusted":
+                image(imgDisgusted, xpos, ypos,  pixelSize, pixelSize);
+                break;  
+              case "fearful":
+                image(imgFearful, xpos, ypos,  pixelSize, pixelSize);
+                break;                             
               default:
                 image(imgNeutral, xpos, ypos,  pixelSize, pixelSize);
                 break;
@@ -169,10 +178,13 @@ function detectEmotions(detections) {
 
       let emotionScores = detections[f].expressions;
 
-      emotionDetected = Object.keys(emotionScores).reduce(function(a, b){ return emotionScores[a] > emotionScores[b] ? a : b });
-      // console.log(emotionDetected);
-      
-      // console.log(emotionLabels[emotionScores.indexOf(Math.max(emotionScores))]);
+      let emotionGuessed = Object.keys(emotionScores).reduce(function(a, b){ return emotionScores[a] > emotionScores[b] ? a : b });
+      if (emotionScores[emotionGuessed] > 0.75) {
+        emotionDetected = emotionGuessed;
+        console.log(emotionDetected);
+        console.log(emotionScores);
+
+      }
 
     
       // console.log("neutral:" + neutral);

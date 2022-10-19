@@ -25,6 +25,9 @@ const faceOptions = {
 let emotionDetected;
 let imgHappy;
 let imgNeutral;
+let imgAngry;
+let imgSad;
+let imgSurprised;
 function preload() {
   // preload() runs once
   imgNeutral = loadImage('assets/neutral_black.png');

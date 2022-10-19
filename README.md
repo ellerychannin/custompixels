@@ -1,4 +1,4 @@
-# custompixels
+# emotionalpixels
 
 Utilizing ml5's image segmentation and emotion detection algorithms, 
 this custompixels detects the human face in front of the laptop camera.
